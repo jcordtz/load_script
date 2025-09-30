@@ -109,13 +109,13 @@ In the **parameters.txt** file you must specify the values for PURVIEW_NAME, TEN
 
 The format of the init_parameters.txt file is as follows.
 
-[parameters](images/parameters.png)
+![parameters](images/parameters.png)
 
 After these changes has been made the setup script must be run using the command
 
 **./setup_purview.sh**
 
-[setup](images/setup.png)
+![setup](images/setup.png)
 
 **Note**
 
@@ -124,7 +124,7 @@ you can run this script using this command
 
 **./setup_purview.sh setup**
 
-[setup_with_lib](images/setup_libraries.png)
+![setup_with_lib](images/setup_libraries.png)
 
 
 ## Each time you open a new Ubuntu terminal
@@ -161,13 +161,13 @@ If you are satisfied with the information enter Y to continue.
 
 # Cleanup procedure
 
-Every time the load_purview script is run, and a source is created, the process registers its progress in a file called <SOURCE_NAME>_<PID>_log.sh,
-where <SOURCE_NAME> is the name of the source being created, <PID>; is the process_id for the Linux process - provided for uniqueness, so that the 
+Every time the load_purview script is run, and a source is created, the process registers its progress in a file called SOURCE_NAME_PID_log.sh,
+where SOURCE_NAME is the name of the source being created, PID; is the process_id for the Linux process - provided for uniqueness, so that the 
 same source can be loaded multiple times, for instance with different tables.
 
 The structure of these files in so that the contains the corresponding "delete" statements using pv of what has been created.
 
-So, if you want to delete everything from a run simply execute the file using the command ./<SOURCE_NAME>_<PID>_log.sh.
+So, if you want to delete everything from a run simply execute the file using the command ./SOURCE_NAME_PID_log.sh.
 
 Alternatively, you can use the commands shown in the file to selective delete unwanted items.  
 
