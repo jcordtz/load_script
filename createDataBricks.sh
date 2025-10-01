@@ -8,8 +8,6 @@ fi
 domain_id=$1
 collection_id=$2
 source_name=$3
-workspace=$3
-catalog=$3
 input_file=$4
 log_file=work/${3}_$$_log.sh
 
@@ -33,8 +31,8 @@ echo "# can be run to remove all that has been done in this job" >> ${log_file}
 echo " " >> ${log_file}
 
 
-echo "Processing catalog - $workspace"
-echo "# Processing catalog ${workpace}" >> ${log_file}
+echo "Processing catalog - $source_name"
+echo "# Processing catalog ${source_name}" >> ${log_file}
 
 # register a catalog
 
@@ -44,9 +42,9 @@ echo "\"entity\": "                                                        >> wo
 echo "   { "                                                               >> work/DatabricksCatalog.json
 echo "      \"typeName\": \"databricks_catalog\", "                        >> work/DatabricksCatalog.json
 echo "      \"attributes\": { "                                            >> work/DatabricksCatalog.json
-echo "            \"name\": \"${workspace}\", "                            >> work/DatabricksCatalog.json
-echo "            \"qualifiedName\": \"Databricks://${workspace}\", "      >> work/DatabricksCatalog.json
-echo "            \"description\": \"${workspace} for Databricks\" "       >> work/DatabricksCatalog.json
+echo "            \"name\": \"${source_name}\", "                          >> work/DatabricksCatalog.json
+echo "            \"qualifiedName\": \"databricks://${source_name}\", "    >> work/DatabricksCatalog.json
+echo "            \"description\": \"${source_name} for Databricks\" "     >> work/DatabricksCatalog.json
 echo "            },"                                                      >> work/DatabricksCatalog.json
 echo "      \"relationshipAttributes\": { "                                >> work/DatabricksCatalog.json
 echo "            \"collection\": {"                                       >> work/DatabricksCatalog.json
@@ -75,22 +73,22 @@ do
        continue
     fi
 
-    echo "Processing schema - ${workspace}.${schema}"
-    echo "# Schema : ${workspace}.${schema}" >>  ${log_file}
+    echo "Processing schema - ${source_name}.${schema}"
+    echo "# Schema : ${source_name}.${schema}" >>  ${log_file}
 
 
     echo "{"                                                                          > work/DatabricksSchema.json
     echo "\"entity\": "                                                              >> work/DatabricksSchema.json
     echo "   { "                                                                     >> work/DatabricksSchema.json
-    echo "      \"typeName\": \"databricks_schema\", "                               >> work/databricksSchema.json
+    echo "      \"typeName\": \"databricks_schema\", "                               >> work/DatabricksSchema.json
     echo "      \"attributes\": { "                                                  >> work/DatabricksSchema.json
     echo "            \"name\": \"${schema}\", "                                     >> work/DatabricksSchema.json
-    echo "            \"qualifiedName\": \"Databricks://${workspace}.${schema}\", "  >> work/databricksSchema.json
+    echo "            \"qualifiedName\": \"databricks://${source_name}.${schema}\"," >> work/DatabricksSchema.json
     echo "            \"description\": \"${schema} for Databricks\" "                >> work/DatabricksSchema.json
     echo "            },"                                                            >> work/DatabricksSchema.json
     echo "      \"relationshipAttributes\": { "                                      >> work/DatabricksSchema.json
-    echo "            \"Databricks_catalog\": {"                                     >> work/databricksSchema.json
-    echo "                  \"qualifiedName\": \"Databricks://${workspace}\" "       >> work/databricksSchema.json
+    echo "            \"Databricks_source_name\": {"                                 >> work/DatabricksSchema.json
+    echo "                  \"qualifiedName\": \"databricks://${source_name}\" "     >> work/DatabricksSchema.json
     echo "            } "                                                            >> work/DatabricksSchema.json
     echo "         } "                                                               >> work/DatabricksSchema.json
     echo "    } "                                                                    >> work/DatabricksSchema.json
@@ -99,23 +97,23 @@ do
     pv entity create --payloadFile=work/DatabricksSchema.json > work/temp1
     cat work/temp1  | grep "\"guid\"" | sed -e "s/.*\"guid\": \"\(.*\)\",*/pv entity delete --guid=\1/" >> ${log_file}
 
-    echo "Processing relationship - $workspace.$schema"
-    echo "# Relationship : ${workspace}.${schema}" >>  ${log_file}
+    echo "Processing relationship - $source_name.$schema"
+    echo "# Relationship : ${source_name}.${schema}" >>  ${log_file}
 
     echo "{  "                                                                         > work/DatabricksSchemaRelation.json
     echo "    \"end1\": { "                                                           >> work/DatabricksSchemaRelation.json
-    echo "        \"typeName\": \"databricks_catalog\", "                             >> work/databricksSchemaRelation.json
+    echo "        \"typeName\": \"databricks_catalog\", "                             >> work/DatabricksSchemaRelation.json
     echo "        \"uniqueAttributes\": { "                                           >> work/DatabricksSchemaRelation.json
-    echo "             \"qualifiedName\": \"Databricks://${workspace}\" "             >> work/databricksSchemaRelation.json
+    echo "             \"qualifiedName\": \"databricks://${source_name}\" "           >> work/DatabricksSchemaRelation.json
     echo "        } "                                                                 >> work/DatabricksSchemaRelation.json
     echo "    }, "                                                                    >> work/DatabricksSchemaRelation.json
     echo "    \"end2\": { "                                                           >> work/DatabricksSchemaRelation.json
-    echo "        \"typeName\": \"databricks_schema\", "                              >> work/databricksSchemaRelation.json
+    echo "        \"typeName\": \"databricks_schema\", "                              >> work/DatabricksSchemaRelation.json
     echo "        \"uniqueAttributes\": { "                                           >> work/DatabricksSchemaRelation.json
-    echo "             \"qualifiedName\": \"Databricks://${workspace}.${schema}\" "   >> work/databricksSchemaRelation.json
+    echo "             \"qualifiedName\": \"databricks://${source_name}.${schema}\" " >> work/DatabricksSchemaRelation.json
     echo "        } "                                                                 >> work/DatabricksSchemaRelation.json
     echo "    }, "                                                                    >> work/DatabricksSchemaRelation.json
-    echo "    \"typeName\": \"databricks_catalog_schemas\" "                          >> work/databricksSchemaRelation.json
+    echo "    \"typeName\": \"databricks_catalog_schemas\" "                          >> work/DatabricksSchemaRelation.json
     echo "} "                                                                         >> work/DatabricksSchemaRelation.json
 
     pv relationship create --payloadFile=work/DatabricksSchemaRelation.json > work/temp2
@@ -147,15 +145,15 @@ do
     echo "{"                                                                                 > work/DatabricksTable.json
     echo "  \"entity\": "                                                                   >> work/DatabricksTable.json
     echo "   { "                                                                            >> work/DatabricksTable.json
-    echo "      \"typeName\": \"databricks_table\", "                                       >> work/databricksTable.json
+    echo "      \"typeName\": \"databricks_table\", "                                       >> work/DatabricksTable.json
     echo "      \"attributes\": { "                                                         >> work/DatabricksTable.json
-    echo "        \"qualifiedName\": \"Databricks://${workspace}.${schema}.${table}\", "    >> work/databricksTable.json
+    echo "        \"qualifiedName\": \"databricks://${source_name}.${schema}.${table}\", "  >> work/DatabricksTable.json
     echo "        \"name\": \"${table}\", "                                                 >> work/DatabricksTable.json
     echo "        \"description\": \"Inserted using script\" "                              >> work/DatabricksTable.json
     echo "        }, "                                                                      >> work/DatabricksTable.json
     echo "      \"relationshipAttributes\": { "                                             >> work/DatabricksTable.json
-    echo "            \"Databricks_schema\": {"                                             >> work/databricksTable.json
-    echo "                  \"qualifiedName\": \"Databricks://${workspace}.${schema}\" "    >> work/databricksTable.json
+    echo "            \"Databricks_schema\": {"                                             >> work/DatabricksTable.json
+    echo "                  \"qualifiedName\": \"databricks://${source_name}.${schema}\" "  >> work/DatabricksTable.json
     echo "            } "                                                                   >> work/DatabricksTable.json
     echo "         } "                                                                      >> work/DatabricksTable.json
     echo "   }"                                                                             >> work/DatabricksTable.json
@@ -169,18 +167,18 @@ do
 
     echo "{  "                                                                                 > work/DatabricksTableRelation.json
     echo "    \"end1\": { "                                                                   >> work/DatabricksTableRelation.json
-    echo "        \"typeName\": \"databricks_schema\", "                                      >> work/databricksTableRelation.json
+    echo "        \"typeName\": \"databricks_schema\", "                                      >> work/DatabricksTableRelation.json
     echo "        \"uniqueAttributes\": { "                                                   >> work/DatabricksTableRelation.json
-    echo "             \"qualifiedName\": \"Databricks://${workspace}.${schema}\" "           >> work/databricksTableRelation.json
+    echo "             \"qualifiedName\": \"databricks://${source_name}.${schema}\" "         >> work/DatabricksTableRelation.json
     echo "        } "                                                                         >> work/DatabricksTableRelation.json
     echo "    }, "                                                                            >> work/DatabricksTableRelation.json
     echo "    \"end2\": { "                                                                   >> work/DatabricksTableRelation.json
-    echo "        \"typeName\": \"databricks_table\", "                                       >> work/databricksTableRelation.json
+    echo "        \"typeName\": \"databricks_table\", "                                       >> work/DatabricksTableRelation.json
     echo "        \"uniqueAttributes\": { "                                                   >> work/DatabricksTableRelation.json
-    echo "             \"qualifiedName\": \"Databricks://${workspace}.${schema}.${table}\" "  >> work/databricksTableRelation.json
+    echo "             \"qualifiedName\": \"databricks://${source_name}.${schema}.${table}\"" >> work/DatabricksTableRelation.json
     echo "        } "                                                                         >> work/DatabricksTableRelation.json
     echo "    }, "                                                                            >> work/DatabricksTableRelation.json
-    echo "    \"typeName\": \"databricks_schema_tables\" "                                    >> work/databricksTableRelation.json
+    echo "    \"typeName\": \"databricks_schema_tables\" "                                    >> work/DatabricksTableRelation.json
     echo "} "                                                                                 >> work/DatabricksTableRelation.json
 
     pv relationship create --payloadFile=work/DatabricksTableRelation.json > work/temp4

@@ -8,9 +8,6 @@ fi
 domain_id=$1
 collection_id=$2
 source_name=$3
-source_db=${3}_db
-workspace=$3
-catalog=$3
 input_file=$4
 log_file=work/${3}_$$_log.sh
 
@@ -34,34 +31,28 @@ echo "# Statements in this file can be execute one-by-one or the complete file" 
 echo "# can be run to remove all that has been done in this job" >> ${log_file}
 echo " " >> ${log_file}
 
-echo "Processing database - ${source_name}/${source_db}"
-echo "# Server/Database - ${source_name}/${source_db}" >> ${log_file}
+echo "Processing server - ${source_name}"
+echo "# Server - ${source_name}" >> ${log_file}
 
-echo "{"                                                                                          > work/OracleDatabase.json
-echo "    \"entity\": {"                                                                         >> work/OracleDatabase.json
-echo "        \"attributes\": {"                                                                 >> work/OracleDatabase.json
-echo "            \"description\": \"Manual Oracle server named ${source_db}.\","                >> work/OracleDatabase.json
-echo "            \"name\": \"${source_db}\","                                                   >> work/OracleDatabase.json
-echo "            \"qualifiedName\": \"oracle://${source_name}/${source_db}\""                   >> work/OracleDatabase.json
-echo "        },"                                                                                >> work/OracleDatabase.json
-echo "        \"collection\": {"                                                                 >> work/OracleDatabase.json
-echo "            \"type\": \"CollectionReference\","                                            >> work/OracleDatabase.json
-echo "            \"referenceName\": \"$collection_id\""                                         >> work/OracleDatabase.json
-echo "        },"                                                                                >> work/OracleDatabase.json
-echo "        \"relationshipAttributes\": {"                                                     >> work/OracleDatabase.json
-echo "            \"server\": {"                                                                 >> work/OracleDatabase.json
-echo "            \"qualifiedName\": \"oracle://${source_name}\""                                >> work/OracleDatabase.json
-echo "            }"                                                                             >> work/OracleDatabase.json
-echo "        },"                                                                                >> work/OracleDatabase.json
-echo "        \"collectionId\": \"$collection_id\","                                             >> work/OracleDatabase.json
-echo "        \"domainId\": \"$domain_id\","                                                     >> work/OracleDatabase.json
-echo "        \"typeName\": \"oracle_server\""                                                   >> work/OracleDatabase.json
-echo "    }"                                                                                     >> work/OracleDatabase.json
-echo "}"                                                                                         >> work/OracleDatabase.json
+echo "{"                                                                                          > work/OracleServer.json
+echo "    \"entity\": {"                                                                         >> work/OracleServer.json
+echo "        \"attributes\": {"                                                                 >> work/OracleServer.json
+echo "            \"description\": \"Manual Oracle server named ${source_nane}.\","              >> work/OracleServer.json
+echo "            \"name\": \"${source_nane}\","                                                 >> work/OracleServer.json
+echo "            \"qualifiedName\": \"oracle://${source_name}\""                                >> work/OracleServer.json
+echo "        },"                                                                                >> work/OracleServer.json
+echo "        \"collection\": {"                                                                 >> work/OracleServer.json
+echo "            \"type\": \"CollectionReference\","                                            >> work/OracleServer.json
+echo "            \"referenceName\": \"$collection_id\""                                         >> work/OracleServer.json
+echo "        },"                                                                                >> work/OracleServer.json
+echo "        \"collectionId\": \"$collection_id\","                                             >> work/OracleServer.json
+echo "        \"domainId\": \"$domain_id\","                                                     >> work/OracleServer.json
+echo "        \"typeName\": \"oracle_server\""                                                   >> work/OracleServer.json
+echo "    }"                                                                                     >> work/OracleServer.json
+echo "}"                                                                                         >> work/OracleServer.json
 
-pv entity create --payloadFile=work/OracleDatabase.json > work/temp0
-cat work/temp0  | grep "\"guid\"" | sed -e "s/.*\"guid\": \"\(.*\)\",*/pv entity delete --guid=\1/" >> ${log_file}
-
+pv entity create --payloadFile=work/OracleServer.json > work/temp0
+cat work/temp0 | grep "\"guid\"" | sed -e "s/.*\"guid\": \"\(.*\)\",*/pv entity delete --guid=\1/" >> ${log_file}
 
 echo " " >>  ${log_file}
 echo "# Oracle Schema creation " >>  ${log_file}
@@ -79,8 +70,8 @@ do
        continue
     fi
 
-    echo "Processing schema - ${source_name}/${source_db}/${schema}"
-    echo "# Schema : ${source_name}/${source_db}/${schema}" >>  ${log_file}
+    echo "Processing schema - ${source_name}/${schema}"
+    echo "# Schema : ${source_name}/${schema}" >>  ${log_file}
 
     echo "{"                                                                                      > work/OracleSchema.json
     echo "\"entity\": "                                                                          >> work/OracleSchema.json
@@ -88,17 +79,17 @@ do
     echo "      \"typeName\": \"oracle_schema\", "                                               >> work/OracleSchema.json
     echo "      \"attributes\": { "                                                              >> work/OracleSchema.json
     echo "            \"name\": \"${schema}\", "                                                 >> work/OracleSchema.json
-    echo "            \"qualifiedName\": \"oracle://${source_name}/${source_db}/${schema}\", "   >> work/OracleSchema.json
+    echo "            \"qualifiedName\": \"oracle://${source_name}/${schema}\", "                >> work/OracleSchema.json
     echo "            \"description\": \"Manual Schema ${schema} for Oracle db\", "              >> work/OracleSchema.json
     echo "            \"db\": { "                                                                >> work/OracleSchema.json
     echo "               \"typeName\": \"oracle_server\", "                                      >> work/OracleSchema.json
     echo "               \"uniqueAttributes\": { "                                               >> work/OracleSchema.json
-    echo "                  \"qualifiedName\": \"oracle://{source_name}/${source_db}\" "         >> work/OracleSchema.json
+    echo "                  \"qualifiedName\": \"oracle://{source_name}\" "                      >> work/OracleSchema.json
     echo "                 } "                                                                   >> work/OracleSchema.json
     echo "         },"                                                                           >> work/OracleSchema.json
     echo "        \"relationshipAttributes\": {"                                                 >> work/OracleSchema.json
     echo "            \"oracle_server\": {"                                                      >> work/OracleSchema.json
-    echo "            \"qualifiedName\": \"oracle://${source_name}/${source_db}\" "              >> work/OracleSchema.json
+    echo "            \"qualifiedName\": \"oracle://${source_name}\" "                           >> work/OracleSchema.json
     echo "            }"                                                                         >> work/OracleSchema.json
     echo "         } "                                                                           >> work/OracleSchema.json
     echo "    } "                                                                                >> work/OracleSchema.json
@@ -109,19 +100,19 @@ do
     cat work/temp1 | grep "\"guid\"" | sed -e "s/.*\"guid\": \"\(.*\)\",*/pv entity delete --guid=\1/" >> ${log_file}
 
 
-    echo "Processing relationship - ${source_name}/${source_db}/$schema"
+    echo "Processing relationship - ${source_name}/$schema"
 
     echo "{   "                                                                                  > work/oracleSchemaRelation.json
     echo "    \"end1\": {  "                                                                    >> work/oracleSchemaRelation.json
     echo "        \"typeName\": \"oracle_server\",  "                                           >> work/oracleSchemaRelation.json
     echo "        \"uniqueAttributes\": {  "                                                    >> work/oracleSchemaRelation.json
-    echo "            \"qualifiedName\": \"oracle://${source_name}/${source_db}\" "             >> work/OracleSchemaRelation.json
+    echo "            \"qualifiedName\": \"oracle://${source_name}\" "                          >> work/OracleSchemaRelation.json
     echo "        }  "                                                                          >> work/oracleSchemaRelation.json
     echo "    },  "                                                                             >> work/oracleSchemaRelation.json
     echo "    \"end2\": {  "                                                                    >> work/oracleSchemaRelation.json
     echo "        \"typeName\": \"oracle_schema\",  "                                           >> work/oracleSchemaRelation.json
     echo "        \"uniqueAttributes\": {  "                                                    >> work/oracleSchemaRelation.json
-    echo "            \"qualifiedName\": \"oracle://${source_name}/${source_db}/${schema}\" "   >> work/oracleSchemaRelation.json
+    echo "            \"qualifiedName\": \"oracle://${source_name}/${schema}\" "                >> work/oracleSchemaRelation.json
     echo "        }  "                                                                          >> work/oracleSchemaRelation.json
     echo "    },  "                                                                             >> work/oracleSchemaRelation.json
     echo "    \"typeName\": \"oracle_server_schemas\"  "                                        >> work/oracleSchemaRelation.json
@@ -161,7 +152,7 @@ do
     echo "      \"typeName\": \"oracle_table\", "                                                      >> work/OracleTable.json
     echo "      \"attributes\": { "                                                                    >> work/OracleTable.json
     echo "        \"name\": \"${table}\", "                                                            >> work/OracleTable.json
-    echo "        \"qualifiedName\": \"oracle://${source_name}/${source_db}/${schema}/${table}\", "    >> work/OracleTable.json
+    echo "        \"qualifiedName\": \"oracle://${source_name}/${schema}/${table}\", "                 >> work/OracleTable.json
     echo "        \"owner\": null, "                                                                   >> work/OracleTable.json
     echo "        \"description\": \"Inserted using script\" "                                         >> work/OracleTable.json
     echo "     },"                                                                                     >> work/OracleTable.json
@@ -180,13 +171,13 @@ do
     echo "    \"end1\": { "                                                                             >> work/OracleTableRelation.json
     echo "        \"typeName\": \"oracle_schema\", "                                                    >> work/OracleTableRelation.json
     echo "        \"uniqueAttributes\": { "                                                             >> work/OracleTableRelation.json
-    echo "             \"qualifiedName\": \"oracle://${source_name}/${source_db}/${schema}\" "          >> work/OracleTableRelation.json
+    echo "             \"qualifiedName\": \"oracle://${source_name}/${schema}\" "                       >> work/OracleTableRelation.json
     echo "        } "                                                                                   >> work/OracleTableRelation.json
     echo "    }, "                                                                                      >> work/OracleTableRelation.json
     echo "    \"end2\": { "                                                                             >> work/OracleTableRelation.json
     echo "        \"typeName\": \"oracle_table\", "                                                     >> work/OracleTableRelation.json
     echo "        \"uniqueAttributes\": { "                                                             >> work/OracleTableRelation.json
-    echo "            \"qualifiedName\": \"oracle://${source_name}/${source_db}/${schema}/${table}\" "  >> work/OracleTableRelation.json
+    echo "            \"qualifiedName\": \"oracle://${source_name}/${schema}/${table}\" "               >> work/OracleTableRelation.json
     echo "        } "                                                                                   >> work/OracleTableRelation.json
     echo "    }, "                                                                                      >> work/OracleTableRelation.json
     echo "    \"typeName\": \"oracle_schema_tables\" "                                                  >> work/OracleTableRelation.json
