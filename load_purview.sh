@@ -1,9 +1,10 @@
+echo
 echo "Placeholder Setup for Purview"
 echo "============================="
 echo
 
 # creating default values
-system_type_def=DataBricks
+system_type_def=3
 system_name_def=SystemName$RANDOM
 owner_def=Owner$RANDOM
 table_name_def=table_name$RANDOM
@@ -135,22 +136,47 @@ system_name=${system_name:-$system_name_def}
 # owner=${owner:-$owner_def}
 
 echo
-echo "System type of $system_name (MSSql/Oracle/DataBricks) [$system_type_def]: " 
+echo "Please choose the type of system you want to register $system_name as:"
+echo 
+echo " 1 - Microsoft SQL (Azure)"
+echo " 2 - Oracle Database"
+echo " 3 - Databricks"
+echo " 4 - PostgreSQL"
+echo " 5 - MySQL"
+echo
+echo "System type of $system_name (1-5) [$system_type_def]: " 
 read system_type
 system_type=${system_type:-$system_type_def}
 
-if [ "$system_type" != "MSSql" ] && [ "$system_type" != "Oracle" ] && [ "$system_type" != "DataBricks" ] && [ "$system_type" != "Custom" ]; then
-   echo "The system type must be MSSql, Oracle or DataBricks"
-   echo 
-   echo "System type entered was : $system_type"
-   echo 
-   echo "Setup aborted"
-   exit -1
-fi
+case $system_type in
+   1) system_type_txt="MSSql"
+      echo "Microsoft SQL (Azure) choosen"
+      ;;
+   2) system_type_txt="Oracle"
+      echo "Oracle Database choosen"
+      ;;
+   3) system_type_txt="Databricks"
+      echo "Databricks choosen"
+      ;;
+   4) system_type_txt="PostgreSQL"
+      echo "PostgreSQL choosen"
+      ;;
+   5) system_type_txt="MySQL"
+      echo "MySQL choosen"
+      ;;
+   *) echo "The system type must be 1 for MSSql, 2 for Oracle,3 for DataBricks, 4 for PostgreSQL or 5 for MySQL"
+      echo 
+      echo "Setup aborted"
+      exit -1
+      ;;
+esac
 
+echo
+echo
 echo "Note"
 echo
-echo "The filename with list of tables must have the format of table_schema,table_name,table_type with a header" 
+echo "The filename with list of tables must have the format of"
+echo "table_schema,table_name,table_type with a header with these names" 
 echo
 
 echo "Enter filename with list of tables [$input_file_name_def]: "
@@ -178,7 +204,7 @@ echo "Parameters entered"
 echo "------------------"
 echo "Parent collection: $parent_collection ($parent_collection_id)"
 echo "System Name      : $system_name"
-echo "System Type      : $system_type"
+echo "System Type      : $system_type for $system_type_txt"
 echo "File name        : $input_file_name"
 echo
 
@@ -204,7 +230,7 @@ if [ ! -d work ]; then
    fi
 fi
 
-if [ $system_type == "MSSql" ]; then
+if [ $system_type_txt == "MSSql" ]; then
 	echo "========================= MSSql =================================="
 	echo "Creating Source $system_name in $system_name($parent_collection_id)"
 	./createSrcMSSQL.sh $system_name $parent_collection_id
@@ -214,7 +240,7 @@ if [ $system_type == "MSSql" ]; then
 	./createMSSQLDB.sh $PURVIEW_NAME $parent_collection_id $system_name $input_file_name
 fi
 
-if [ $system_type == "Oracle" ]; then
+if [ $system_type_txt == "Oracle" ]; then
 	echo "========================== Oracle ================================"
 	echo "Creating Source $system_name in $system_name($parent_collection_id)"
 	./createSrcOracle.sh $system_name $parent_collection_id
@@ -225,7 +251,7 @@ if [ $system_type == "Oracle" ]; then
 
 fi
 
-if [ $system_type == "DataBricks" ]; then
+if [ $system_type_txt == "Databricks" ]; then
 	echo "========================== DataBricks ================================"
 	echo "Creating Source $system_name in $system_name($parent_collection_id)"
 	./createSrcDataBricks.sh $system_name $parent_collection_id
@@ -236,13 +262,35 @@ if [ $system_type == "DataBricks" ]; then
 
 fi
 
-if [ $system_type == "Custom" ]; then
+if [ $system_type_txt == "Postgres" ]; then
+	echo "========================== Custom ================================"
+	echo "Creating Source $system_name in $system_name($parent_collection_id)"
+	./createSrcPostgres.sh $system_name $parent_collection_id
+
+	echo "Creating Database ${system_name}_db in $parent_collection_id"
+	# Create Database
+	./createPostgresDB.sh $PURVIEW_NAME $parent_collection_id $system_name $input_file_name
+
+fi
+
+if [ $system_type_txt == "MySQL" ]; then
+	echo "========================== Custom ================================"
+	echo "Creating Source $system_name in $system_name($parent_collection_id)"
+	./createSrcMYSQL.sh $system_name $parent_collection_id
+
+	echo "Creating Database ${system_name}_db in $parent_collection_id"
+	# Create Database
+	./createMYSQLDB.sh $PURVIEW_NAME $parent_collection_id $system_name $input_file_name
+
+fi
+
+if [ $system_type_txt == "Custom" ]; then
 	echo "========================== Custom ================================"
 	echo "Creating Source $system_name in $system_name($parent_collection_id)"
 	# ./createSrcCustom.sh $system_name $parent_collection_id
 
 	echo "Creating Database ${system_name}_db in $parent_collection_id"
 	# Create Database
-	# ./createCustom.sh $system_name $parent_collection_id
+	# ./createCustom.sh $PURVIEW_NAME $parent_collection_id $system_name $input_file_name
 
 fi
