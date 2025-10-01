@@ -14,7 +14,7 @@ input_file_name_def=tables.csv
 echo "This script will create a placeholder, that can be used for referencing"
 echo "for a system that can not be scanned due to what ever reason"
 echo
-echo "The script supports creating systems of type MSSql, Oracle and Databricks"
+echo "The script supports creating systems of type MSSql, Oracle, Databricks, Postgres and MySQL"
 echo
 echo "Getting Purview Account"
 

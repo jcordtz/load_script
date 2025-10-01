@@ -16,7 +16,7 @@ The code is based on the Purview cli interface provided through GitHub:
 
 For each source - information from the "server" to the "tables" are loaded. No columns in added.
 
-The hierarchy structure and the connection to the collection shown in the Purview Portal does not as of now.
+The hierarchy structure and the connection to the collection shown in the Purview Portal lacks for DataBricks.
 
 ## Initial setup
 
@@ -155,7 +155,7 @@ Parameters that the dialogue asks for
 
 If you are satisfied with the information enter Y to continue.
 
-[example_of_dialogue](images/load_script.png)
+![example_of_dialogue](images/load_script.png)
 
 **NOTE:** In case you get an error, you must likely need to run the initialization command**. ./init_purview.sh**
 
