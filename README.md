@@ -173,4 +173,4 @@ Alternatively, you can use the commands shown in the file to selective delete un
 
 >[!Note]
 >If the scripts is run as a complete run the sources them selves are also deleted, hence will all objects connected to those be deleted.
->Even though they was not load in "one go"
+>Even though they was not loaded in "one go"
