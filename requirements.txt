@@ -1,0 +1,11 @@
+azure-core
+azure-identity
+# Purview
+azure-purview-account
+azure-purview-catalog
+azure-purview-scanning
+azure-purview-administration
+pyapacheatlas
+purviewcli
+# extras
+pandas

@@ -1,0 +1,11 @@
+# Virtual environment for Purview CLI
+**/.venv*
+
+# Working directories
+**/work
+**/collections_list
+
+# Secrets
+**/parameters.txt
+**/init_purview.sh
+

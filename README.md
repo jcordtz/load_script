@@ -107,7 +107,14 @@ Before running the scripts, you need to change the **parameters.txt** file and t
 
 In the **parameters.txt** file you must specify the values for PURVIEW_NAME, TENANT_ID, CLIENT_ID and CLIENT_SECRET.
 
-The format of the init_parameters.txt file is as follows.
+The format of the parameters.txt file is as follows.
+
+``` md
+PURVIEW_NAME=<!--Your Purview resource name-->
+TENANT_ID=<!--The tenant id where the resource is deployed-->
+CLIENT_ID=<!--The client id used to access the API - setup in an app registration for this purpose-->
+CLIENT_SECRET=<!--The secret id used to access the API-->
+```
 
 ![parameters](images/parameters.png)
 
