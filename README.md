@@ -127,20 +127,12 @@ you can run this script using this command
 ![setup_with_lib](images/setup_libraries.png)
 
 
-## Each time you open a new Ubuntu terminal
-
-Every time the Ubuntu shell is opened the command **. ./init_purview.sh** must be issued.
-
-**Please note that both punctuations must be entered!!!**
-
-This command initializes the parameters to be used for connecting to the Purview account.
-
-This command must run every time the cloud shell is activated.
 
 ## Load purview with a new "system."
 
-To create a new placeholder for a "system" within the Purview instance you then run
-the command **./load_purview.sh**
+To create a new placeholder for a "system" within the Purview instance you then run the command **./load_purview.sh**
+
+The **load_purview.sh** script automatically initializes using the parameters in **init_purview.sh** file.
 
 This command has a dialogue. First the connection is made to the Purview account.  
 
@@ -155,9 +147,7 @@ Parameters that the dialogue asks for
 
 If you are satisfied with the information enter Y to continue.
 
-![example_of_dialogue](images/load_script.png)
-
-**NOTE:** In case you get an error, you must likely need to run the initialization command**. ./init_purview.sh**
+**NOTE:** In case you get an error, you must likely have an error in the **parameters.txt** file affecting the content of the **init_purview.sh** file.
 
 # Cleanup procedure
 
