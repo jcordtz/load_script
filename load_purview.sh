@@ -12,6 +12,8 @@ input_file_name_def=tables.csv
 
 source init_purview.sh
 
+echo "-------------------------------------------------------------------------"
+echo
 echo "This script will create a placeholder, that can be used for referencing"
 echo "for a system that can not be scanned due to what ever reason"
 echo
