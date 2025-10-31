@@ -161,19 +161,19 @@ system_type=${system_type:-$system_type_def}
 
 case $system_type in
    1) system_type_txt="MSSql"
-      echo "Microsoft SQL (Azure) choosen"
+      echo "Microsoft SQL (Azure) chosen"
       ;;
    2) system_type_txt="Oracle"
-      echo "Oracle Database choosen"
+      echo "Oracle Database chosen"
       ;;
    3) system_type_txt="Databricks"
-      echo "Databricks choosen"
+      echo "Databricks chosen"
       ;;
    4) system_type_txt="PostgreSQL"
-      echo "PostgreSQL choosen"
+      echo "PostgreSQL chosen"
       ;;
    5) system_type_txt="MySQL"
-      echo "MySQL choosen"
+      echo "MySQL chosen"
       ;;
    *) echo "The system type must be 1 for MSSql, 2 for Oracle,3 for DataBricks, 4 for PostgreSQL or 5 for MySQL"
       echo 
