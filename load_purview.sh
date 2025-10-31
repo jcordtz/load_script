@@ -10,6 +10,7 @@ owner_def=Owner$RANDOM
 table_name_def=table_name$RANDOM
 input_file_name_def=tables.csv
 
+source init_purview.sh
 
 echo "This script will create a placeholder, that can be used for referencing"
 echo "for a system that can not be scanned due to what ever reason"
