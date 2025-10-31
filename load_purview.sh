@@ -89,6 +89,8 @@ echo
 
 > collections_list
 
+coll_no=1
+
 pv account getCollections |
 while read line 
 do
@@ -100,7 +102,8 @@ do
      fi
 
      if [ "$collection_id" != "" ]; then
-	     echo " -- $save_collection_name ($collection_id)" >> collections_list
+	     echo " $coll_no - $save_collection_name ($collection_id)" >> collections_list
+        ((coll_no++))
      fi
 done
 
@@ -111,8 +114,11 @@ echo "Available collections:"
 cat collections_list
 echo
 
-echo "Name of parent_collection [$parent_collection_def]: " 
-read parent_collection
+echo "Number for parent_collection [1]: " 
+read parent_collection_no
+
+parent_collection=`grep "^ $parent_collection_no - " collections_list | sed -e "s/.* - //" -e "s/(.*)//"`
+
 parent_collection=${parent_collection:-$parent_collection_def}
 
 parent_collection_id=`grep "$parent_collection" collections_list | sed -e "s/.*(//" -e "s/)//"`
@@ -128,6 +134,8 @@ echo
 echo "Name of System [$system_name_def]: " 
 read system_name
 system_name=${system_name:-$system_name_def}
+
+system_name=`echo $system_name | sed -e "s/ /_/g"`
 
 # not implemented yet
 # echo

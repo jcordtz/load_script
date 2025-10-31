@@ -79,7 +79,7 @@ If you are using Ubuntu "clean" please change directory names accordingly.
 
 Unzip the files provided to a directory of your preference - this document uses the name for a directory located in the root of c-drive called **purview**.
 
-Start the ubuntu distribution using the Windows Teminal.
+Start the ubuntu distribution using the Windows Terminal.
 
 Change directory to /mnt/c/purview.
 
@@ -107,7 +107,7 @@ Before running the scripts, you need to change the **parameters.txt** file and t
 
 In the **parameters.txt** file you must specify the values for PURVIEW_NAME, TENANT_ID, CLIENT_ID and CLIENT_SECRET.
 
-The format of the init_parameters.txt file is as follows.
+The format of the parameters.txt file is as follows.
 
 ![parameters](images/parameters.png)
 
@@ -148,9 +148,9 @@ Please note that script provides default values in [] and that the default for Y
 
 Parameters that the dialogue asks for
 
-- Name of parent collection - default is the root collection.
-- Name of system - whatever name you would like to use. You cannot use "spaces" in the name, use "_" instead.
-- You can choose type of system being MS Sql, Oracle or Databricks.
+- Name of parent collection - default is the root collection (choose the corresponding number).
+- Name of system - whatever name you would like to use. You cannot use "spaces" in the name, use "_" instead. If you accidentally do use space these are substituted with _.
+- You can choose type of system being MS Sql, Oracle, Databricks, Postgresql or MySQL (choose the corresponding number).
 - The name of the file the contains the "tables" the need to be load. This name can be "anything" if that file has the right structure.
 
 If you are satisfied with the information enter Y to continue.
@@ -172,5 +172,5 @@ So, if you want to delete everything from a run simply execute the file using th
 Alternatively, you can use the commands shown in the file to selective delete unwanted items.  
 
 >[!Note]
->If the scripts is run as a complete run the sources them selves are also deleted, hence will all objects connected to those be deleted.
+>If the scripts is run as a complete run the sources them selves are also deleted, hence will all objects connected to those will be deleted.
 >Even though they was not loaded in "one go"
