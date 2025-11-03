@@ -5,6 +5,7 @@ echo
 
 # creating default values
 system_type_def=3
+parent_collection_no_def=1
 system_name_def=SystemName$RANDOM
 owner_def=Owner$RANDOM
 table_name_def=table_name$RANDOM
@@ -69,12 +70,10 @@ if [ "$friendlyName" == "" ]; then
    exit -1
 fi
 
-parent_collection_def=$PURVIEW_NAME
-
 echo
 echo
-echo "Using Purview account $PURVIEW_NAME"
-echo "with colletion master/friendly name $PURVIEW_NAME/$friendlyName"
+echo "Using Purview account               -  $PURVIEW_NAME"
+echo "with colletion master/friendly name -  $PURVIEW_NAME/$friendlyName"
 echo
 
 read -p "Is this the right Purview account Y/[N] " continue
@@ -120,9 +119,16 @@ echo
 echo "Number for collection where to register the new system [1]: " 
 read parent_collection_no
 
+parent_collection_no=${parent_collection_no:-$parent_collection_no_def}
+
 parent_collection=`grep "^ $parent_collection_no - " collections_list | sed -e "s/.* - //" -e "s/(.*)//"`
 
-parent_collection=${parent_collection:-$parent_collection_def}
+if [ "$parent_collection" == "" ]; then
+   echo "The collection with number $parent_collection_no does not exist"
+   echo
+   echo "Setup aborted"
+   exit -1
+fi
 
 parent_collection_id=`grep "$parent_collection" collections_list | sed -e "s/.*(//" -e "s/)//"`
 
@@ -205,6 +211,19 @@ fi
 
 if ! test -f $input_file_name ; then
    echo "Input file does not exist."
+   echo 
+   echo "Setup aborted"
+   exit -1
+fi
+
+head -n1 $input_file_name | grep "table_schema,.*table_name,.*table_type" > /dev/null
+
+if [ $? -ne 0 ]; then
+   echo
+   echo "Input does not have the right header"
+   echo
+   echo "The filename with list of tables must have the format of"
+   echo "table_schema,table_name,table_type with a header with these names" 
    echo 
    echo "Setup aborted"
    exit -1
