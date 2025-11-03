@@ -17,8 +17,8 @@ echo
 echo "All processing is registered in ** ${log_file} ** with corresponding delete statements"
 echo
 echo "NOTE:"
-echo "Statements in this file can be execute one-by-one or the complete file"
-echo "can be run to remove all that has been done in this job"
+echo "Statements in this file can be execute one-by-one or the" 
+echo "complete file can be run to remove all that has been done in this job"
 echo
 
 echo "# Databricks - job date `date`" >  ${log_file}

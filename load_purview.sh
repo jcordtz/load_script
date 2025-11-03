@@ -117,7 +117,7 @@ echo "Available collections:"
 cat collections_list
 echo
 
-echo "Number for parent_collection [1]: " 
+echo "Number for collection where to register the new system [1]: " 
 read parent_collection_no
 
 parent_collection=`grep "^ $parent_collection_no - " collections_list | sed -e "s/.* - //" -e "s/(.*)//"`
@@ -127,7 +127,7 @@ parent_collection=${parent_collection:-$parent_collection_def}
 parent_collection_id=`grep "$parent_collection" collections_list | sed -e "s/.*(//" -e "s/)//"`
 
 if [ "$parent_collection_id" == "" ]; then
-   echo "The parent collection $parent_collection does not exist"
+   echo "The collection with number $parent_collection_no does not exist"
    echo
    echo "Setup aborted"
    exit -1
@@ -140,6 +140,8 @@ system_name=${system_name:-$system_name_def}
 
 system_name=`echo $system_name | sed -e "s/ /_/g"`
 
+echo "System name set to $system_name"
+
 # not implemented yet
 # echo
 # echo "Owner of System $system_name [$owner_def]: " 
@@ -149,7 +151,7 @@ system_name=`echo $system_name | sed -e "s/ /_/g"`
 echo
 echo "Please choose the type of system you want to register $system_name as:"
 echo 
-echo " 1 - Microsoft SQL (Azure)"
+echo " 1 - Azure SQL Server / Microsoft SQL"
 echo " 2 - Oracle Database"
 echo " 3 - Databricks"
 echo " 4 - PostgreSQL"
@@ -175,7 +177,7 @@ case $system_type in
    5) system_type_txt="MySQL"
       echo "MySQL chosen"
       ;;
-   *) echo "The system type must be 1 for MSSql, 2 for Oracle,3 for DataBricks, 4 for PostgreSQL or 5 for MySQL"
+   *) echo "The system type must be 1 for MSSql, 2 for Oracle, 3 for DataBricks, 4 for PostgreSQL or 5 for MySQL"
       echo 
       echo "Setup aborted"
       exit -1
@@ -240,6 +242,7 @@ if [ ! -d work ]; then
       exit -3
    fi
 fi
+
 
 if [ $system_type_txt == "MSSql" ]; then
 	echo "========================= MSSql =================================="
