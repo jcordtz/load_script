@@ -1,4 +1,4 @@
-# Purview loader for Databricks, Oracle, Postgressql, MYSql and MSSQL sources
+# Purview loader for Databricks, Oracle, PostgreSql, MYSql and MSSQL sources
 
 
 ## Overview
