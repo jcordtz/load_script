@@ -37,8 +37,8 @@ echo "# Server - ${source_name}" >> ${log_file}
 echo "{"                                                                                          > work/MysqlServer.json
 echo "    \"entity\": {"                                                                         >> work/MysqlServer.json
 echo "        \"attributes\": {"                                                                 >> work/MysqlServer.json
-echo "            \"description\": \"Manual Mysql server named ${source_nane}.\","               >> work/MysqlServer.json
-echo "            \"name\": \"${source_nane}\","                                                 >> work/MysqlServer.json
+echo "            \"description\": \"Manual Mysql server named ${source_name}.\","               >> work/MysqlServer.json
+echo "            \"name\": \"${source_name}\","                                                 >> work/MysqlServer.json
 echo "            \"qualifiedName\": \"mysql://${source_name}\""                                 >> work/MysqlServer.json
 echo "        },"                                                                                >> work/MysqlServer.json
 echo "        \"collection\": {"                                                                 >> work/MysqlServer.json

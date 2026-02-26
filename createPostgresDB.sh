@@ -37,8 +37,8 @@ echo "# Server - ${source_name}" >> ${log_file}
 echo "{"                                                                                          > work/PostgresServer.json
 echo "    \"entity\": {"                                                                         >> work/PostgresServer.json
 echo "        \"attributes\": {"                                                                 >> work/PostgresServer.json
-echo "            \"description\": \"Manual Postgres server named ${source_nane}.\","            >> work/PostgresServer.json
-echo "            \"name\": \"${source_nane}\","                                                 >> work/PostgresServer.json
+echo "            \"description\": \"Manual Postgres server named ${source_name}.\","            >> work/PostgresServer.json
+echo "            \"name\": \"${source_name}\","                                                 >> work/PostgresServer.json
 echo "            \"qualifiedName\": \"postgresql://${source_name}\""                            >> work/PostgresServer.json
 echo "        },"                                                                                >> work/PostgresServer.json
 echo "        \"collection\": {"                                                                 >> work/PostgresServer.json

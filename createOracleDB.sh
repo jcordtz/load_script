@@ -37,8 +37,8 @@ echo "# Server - ${source_name}" >> ${log_file}
 echo "{"                                                                                          > work/OracleServer.json
 echo "    \"entity\": {"                                                                         >> work/OracleServer.json
 echo "        \"attributes\": {"                                                                 >> work/OracleServer.json
-echo "            \"description\": \"Manual Oracle server named ${source_nane}.\","              >> work/OracleServer.json
-echo "            \"name\": \"${source_nane}\","                                                 >> work/OracleServer.json
+echo "            \"description\": \"Manual Oracle server named ${source_name}.\","              >> work/OracleServer.json
+echo "            \"name\": \"${source_name}\","                                                 >> work/OracleServer.json
 echo "            \"qualifiedName\": \"oracle://${source_name}\""                                >> work/OracleServer.json
 echo "        },"                                                                                >> work/OracleServer.json
 echo "        \"collection\": {"                                                                 >> work/OracleServer.json
