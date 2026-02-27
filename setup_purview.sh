@@ -137,6 +137,10 @@ if [ ! -f init_purview.sh ]; then
    exit 4
 fi
 
+echo "# MacOS tweak due to old version of Python being default on MacOS" >> init_purview.sh
+echo "alias pv=\"pv 2>/dev/null\"" >> init_purview.sh
+echo >> init_purview.sh
+
 echo "# Service principal variables and name of the purview account to be used" >> init_purview.sh
 echo "export PURVIEW_NAME=${PURVIEW_NAME}" >> init_purview.sh
 
